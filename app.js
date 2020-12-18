@@ -8,6 +8,7 @@ const shopRoutes = require('./routes/shop')
 const bodyParser = require('body-parser')
 // const expressHbs = require('express-handlebars')
 // const db = require('./util/database')
+const sequelize = require('./util/database')
 
 
 const app = express()
@@ -35,8 +36,16 @@ app.use(shopRoutes)
 
 app.use(errorController.get404)
 // const server = http.createServer(app)
+sequelize
+    .sync()
+    .then(result => {
+        // console.log(result)
+        app.listen(3000, () => {
+            console.log('Server is running');
+        })  
+    })
+    .catch(err => console.log(err))
 
-
-app.listen(3000, () => {
-    console.log('Server is running');
-})  
+// app.listen(3000, () => {
+//     console.log('Server is running');
+// })  
