@@ -5,7 +5,7 @@ const errorController = require('./controllers/error')
 const mongoConnect = require('./util/database').mongoConnect
 const path = require('path')
 const adminRoutes = require('./routes/admin')
-// const shopRoutes = require('./routes/shop')
+const shopRoutes = require('./routes/shop')
 const bodyParser = require('body-parser')
 // const expressHbs = require('express-handlebars')
 // const db = require('./util/database')
@@ -46,7 +46,7 @@ next()
 })
 
 app.use('/admin', adminRoutes)
-// app.use(shopRoutes)
+app.use(shopRoutes)
 // db.execute('SELECT * FROM products').then((result) => {
 //     console.log(result[0], result[1])
 // }).catch((err) => {

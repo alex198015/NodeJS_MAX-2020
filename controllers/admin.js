@@ -106,8 +106,8 @@ exports.getEditProduct = (req, res, next) => {
 // }
 
 exports.getProducts = (req, res, next) => {
-    req.user.getProducts()
-    // Product.findAll()
+   
+    Product.fetchAll()
         .then(products => {
             res.render('admin/products', {
                 prods: products,
@@ -116,6 +116,17 @@ exports.getProducts = (req, res, next) => {
             })
         })
         .catch(err => console.log(err))
+    // req.user
+    //     .getProducts()
+    // // Product.findAll()
+    //     .then(products => {
+    //         res.render('admin/products', {
+    //             prods: products,
+    //             pageTitle: 'Admin Products',
+    //             path: '/admin/products',
+    //         })
+    //     })
+    //     .catch(err => console.log(err))
 
     // Product.fetchAll(products => {
     //     res.render('admin/products', {
