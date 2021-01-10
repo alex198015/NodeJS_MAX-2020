@@ -118,12 +118,13 @@ const getDb = require('../util/database').getDb
 const mongodb = require('mongodb')
 
 class Product {
-    constructor(title, price, description, imageUrl, id) {
+    constructor(title, price, description, imageUrl, id, userId ) {
         this.title = title
         this.imageUrl = imageUrl
         this.description = description
         this.price = price
         this._id = id ? new mongodb.ObjectId(id) : null
+        this.userId = userId
     }
 
     save() {
@@ -170,6 +171,7 @@ class Product {
             })
             .catch(err => console.log(err))
     }
+
     static deleteById(prodId) {
         const db = getDb()
        return  db.collection('products')
