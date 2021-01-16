@@ -2,17 +2,18 @@ const express = require('express')
 
 // const http = require('http')
 const errorController = require('./controllers/error')
-const mongoConnect = require('./util/database').mongoConnect
-const User = require('./models/user')
+// const mongoConnect = require('./util/database').mongoConnect
+// const User = require('./models/user')
 const path = require('path')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 // const expressHbs = require('express-handlebars')
 // const db = require('./util/database')
 // const sequelize = require('./util/database')
 // const Product = require('./models/product')
-// const User = require('./models/user')
+const User = require('./models/user')
 // const Cart = require('./models/cart')
 // const CartItem = require('./models/cart-item')
 // const Order = require('./models/order')
@@ -35,10 +36,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use((req, res, next) => {
-    User.findByPk('5ffb2778da8b448570185c5a')
+    User.findById('60034aa285985505800c9f97')
         .then(user => {
             // req.user = user
-            req.user = new User(user.name, user.email, user.cart, user._id)
+            req.user = user
             
             next()
         })
@@ -46,6 +47,19 @@ app.use((req, res, next) => {
             console.log(err);
         })
 })
+
+// app.use((req, res, next) => {
+//     User.findByPk('5ffb2778da8b448570185c5a')
+//         .then(user => {
+//             // req.user = user
+//             req.user = new User(user.name, user.email, user.cart, user._id)
+            
+//             next()
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+// })
 
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
@@ -98,7 +112,28 @@ app.use(errorController.get404)
 //     console.log('Server is running');
 // })  
 
-mongoConnect(() => {
+// mongoConnect(() => {
     
-    app.listen(3000)
-})
+//     app.listen(3000)
+// })
+
+mongoose.connect('mongodb+srv://Alex:ajW86oLXppXPnQ66@cluster0.nreob.mongodb.net/shop?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+    .then(result => {
+        User.findOne().then(user => {
+            if(!user) {
+                const user = new User({
+                    name: 'Alex',
+                    email: 'kitten2000@gmail.com',
+                    cart: {
+                        items: []
+                    }
+                })
+                user.save()
+            }
+        })
+        
+        app.listen(3000)
+    })
+    .catch(err => [
+        console.log(err)
+    ])
