@@ -103,13 +103,23 @@ exports.postCart = (req, res, next) => {
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
+
     const prodId = req.body.productId
 
-    req.user.deleteItemFromCart(prodId)
+    req.user.removeFromCart(prodId)
         .then(result => {
             res.redirect('/')
         })
         .catch(err => console.log(err))
+
+    // const prodId = req.body.productId
+
+    // req.user.deleteItemFromCart(prodId)
+    //     .then(result => {
+    //         res.redirect('/')
+    //     })
+    //     .catch(err => console.log(err))
+
     // const prodId = req.body.productId
 
     // req.user.getCart()
@@ -207,8 +217,13 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
 
-    req.user.getCart()
-        .then(products => {
+    req.user
+        .populate('cart.items.productId')
+        .execPopulate()
+        .then(user => {
+           
+            const products = user.cart.items
+
                 res.render('shop/cart', {
                         path: '/cart',
                         pageTitle: 'Your Cart',
@@ -216,6 +231,17 @@ exports.getCart = (req, res, next) => {
                         })
                             })
         .catch(err => console.log(err))
+
+    // req.user.getCart()
+    //     .then(products => {
+    //             res.render('shop/cart', {
+    //                     path: '/cart',
+    //                     pageTitle: 'Your Cart',
+    //                     products: products
+    //                     })
+    //                         })
+    //     .catch(err => console.log(err))
+
     // req.user.getCart()
     //     .then(cart => {
     //         cart.getProducts()
