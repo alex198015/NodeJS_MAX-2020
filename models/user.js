@@ -177,4 +177,9 @@ userSchema.methods.removeFromCart = function (productId) {
     return this.save()
 }
 
+userSchema.methods.clearClart = function() {
+    this.cart = {items: []}
+    return this.save()
+}
+
 module.exports = mongoose.model('User', userSchema)
