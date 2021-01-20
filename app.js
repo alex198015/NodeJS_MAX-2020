@@ -7,6 +7,7 @@ const errorController = require('./controllers/error')
 const path = require('path')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+const authRoutes = require('./routes/auth')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 // const expressHbs = require('express-handlebars')
@@ -63,6 +64,7 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
+app.use(authRoutes)
 // db.execute('SELECT * FROM products').then((result) => {
 //     console.log(result[0], result[1])
 // }).catch((err) => {
