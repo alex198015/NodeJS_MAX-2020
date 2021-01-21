@@ -10,17 +10,25 @@ const shopRoutes = require('./routes/shop')
 const authRoutes = require('./routes/auth')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const session = require('express-session')
+const MongoStore = require('connect-mongodb-session')(session)
 // const expressHbs = require('express-handlebars')
 // const db = require('./util/database')
 // const sequelize = require('./util/database')
 // const Product = require('./models/product')
 const User = require('./models/user')
+
+const MONGODB_URI = 'mongodb+srv://Alex:ajW86oLXppXPnQ66@cluster0.nreob.mongodb.net/shop?retryWrites=true&w=majority'
 // const Cart = require('./models/cart')
 // const CartItem = require('./models/cart-item')
 // const Order = require('./models/order')
 // const OrdertItem = require('./models/order-item')
 
 const app = express()
+const store = new MongoStore({
+    uri: MONGODB_URI,
+    collection: 'sessions'
+})
 
 // app.engine('hbs', expressHbs({
 //     layoutsDir: 'views/layouts/',
@@ -35,19 +43,25 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+    store
+}))
 
-app.use((req, res, next) => {
-    User.findById('60034aa285985505800c9f97')
-        .then(user => {
-            // req.user = user
-            req.user = user
+// app.use((req, res, next) => {
+//     User.findById('60034aa285985505800c9f97')
+//         .then(user => {
+//             // req.user = user
+//             req.user = user
             
-            next()
-        })
-        .catch(err => {
-            console.log(err);
-        })
-})
+//             next()
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+// })
 
 // app.use((req, res, next) => {
 //     User.findByPk('5ffb2778da8b448570185c5a')
@@ -119,7 +133,7 @@ app.use(errorController.get404)
 //     app.listen(3000)
 // })
 
-mongoose.connect('mongodb+srv://Alex:ajW86oLXppXPnQ66@cluster0.nreob.mongodb.net/shop?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
     .then(result => {
         User.findOne().then(user => {
             if(!user) {
