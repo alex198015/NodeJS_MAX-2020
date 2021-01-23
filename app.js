@@ -151,18 +151,18 @@ app.use(errorController.get404)
 
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
     .then(result => {
-        User.findOne().then(user => {
-            if(!user) {
-                const user = new User({
-                    name: 'Alex',
-                    email: 'kitten2000@gmail.com',
-                    cart: {
-                        items: []
-                    }
-                })
-                user.save()
-            }
-        })
+        // User.findOne().then(user => {
+        //     if(!user) {
+        //         const user = new User({
+        //             name: 'Alex',
+        //             email: 'kitten2000@gmail.com',
+        //             cart: {
+        //                 items: []
+        //             }
+        //         })
+        //         user.save()
+        //     }
+        // })
         
         app.listen(3000)
     })
