@@ -1,5 +1,16 @@
+const sgMail = require('@sendgrid/mail')
+// const nodemailer = require('nodemailer')
+// const sendgridTransport = require('nodemailer-sendgrid-transport')
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
+
+// const transporter = nodemailer.createTransport(sendgridTransport({
+//     auth: {
+//         api_key: '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'
+//     }
+// }))
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 exports.getLogin = (req, res, next) => {
         let message = req.flash('error')
@@ -95,6 +106,27 @@ exports.postSignup = (req, res, next) => {
                 })
                 .then(result => {
                     res.redirect('/login')
+                    // return transporter.sendMail({
+                    //     to: email,
+                    //     from: 'shop@node-complete.com',
+                    //     subject: 'Signup succeeded!',
+                    //     html: '<h1>You successfully signed up!</h1>'
+                    // })
+                    sgMail.send({
+                        to: email,
+                        from: 'sting99998@gmail.com',
+                        subject: 'Signup succeeded!',
+                        html: '<h1>You successfully signed up!</h1>'
+                    })
+                    .then(() => {
+                        console.log('Email sent');
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
                 })
         })
         .catch(err => {
