@@ -26,9 +26,11 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
     // products.push({title: req.body.title})
     const title = req.body.title
-    const imageUrl = req.body.imageUrl
+    // const imageUrl = req.body.imageUrl
+    const imageUrl = req.file
     const price = req.body.price
     const description = req.body.description
+    console.log(imageUrl);
     // req.user.createProduct({
     //     title: title,
     //     price: price,
