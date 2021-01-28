@@ -15,7 +15,11 @@ exports.getProducts = (req, res, next) => {
             // isAuthenticated: req.session.isLoggedIn
         })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        return next(error)
+    })
 
     // Product.findAll()
     // .then(products => {
@@ -112,7 +116,11 @@ exports.postCartDeleteProduct = (req, res, next) => {
         .then(result => {
             res.redirect('/')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 
     // const prodId = req.body.productId
 
@@ -169,7 +177,11 @@ exports.getProduct = (req, res, next) => {
                 // isAuthenticated: req.session.isLoggedIn
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
     // Product.findById(prodId)
     //     .then(([product]) => {
            
@@ -194,7 +206,11 @@ exports.getIndex = (req, res, next) => {
                 
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 
     // Product.findAll()
     //     .then(products => {
@@ -235,7 +251,11 @@ exports.getCart = (req, res, next) => {
                         // isAuthenticated: req.session.isLoggedIn
                         })
                             })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 
     // req.user.getCart()
     //     .then(products => {
@@ -314,7 +334,9 @@ exports.postOrder = (req, res, next) => {
             res.redirect('/orders')
         })
         .catch(err => {
-            console.log(err);
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
         })
 
     // let fetchedCart

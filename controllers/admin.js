@@ -1,4 +1,5 @@
 
+const mongoose = require('mongoose')
 const {validationResult} = require('express-validator')
 const Product = require('../models/product')
 
@@ -47,7 +48,7 @@ exports.postAddProduct = (req, res, next) => {
     if(!errors.isEmpty()) {
         return res.status(422).render('admin/edit-product', {
             pageTitle:'Add Product',
-            path: '/admin/edit-product',
+            path: '/admin/add-product',
             editing: false,
             hasError: true,
             product: {
@@ -62,6 +63,7 @@ exports.postAddProduct = (req, res, next) => {
     }
 
     const product = new Product({
+        // _id: new mongoose.Types.ObjectId('6011905bf84b9c3960552246'),
         title: title,
         price: price,
         description: description, 
@@ -73,7 +75,26 @@ exports.postAddProduct = (req, res, next) => {
         console.log(result)
         res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        // return res.status(500).render('admin/edit-product', {
+        //     pageTitle:'Add Product',
+        //     path: '/admin/add-product',
+        //     editing: false,
+        //     hasError: true,
+        //     product: {
+        //         title: title,
+        //         imageUrl: imageUrl,
+        //         price: price,
+        //         description: description
+        //     },
+        //     errorMessage: 'Database operation failed, please try again',
+        //     validationErrors: []
+        // })
+        // res.redirect('/500')
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        return next(error)
+    })
 }
 
 exports.getEditProduct = (req, res, next) => {
@@ -105,7 +126,11 @@ exports.getEditProduct = (req, res, next) => {
                
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 
     // Product.findById(prodId, product => {
     //     if(!product) {
@@ -172,7 +197,11 @@ exports.postEditProduct = (req, res, next) => {
         // })
         
         
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 
 
     // const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice)
@@ -195,7 +224,11 @@ exports.getProducts = (req, res, next) => {
                 // isAuthenticated: req.session.isLoggedIn
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
     // req.user
     //     .getProducts()
     // // Product.findAll()
@@ -227,7 +260,11 @@ exports.postDeleteProduct = (req, res, next) => {
             console.log('PRODUCT IS DELETED!')
             res.redirect('/admin/products')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
     // const prodId = req.body.productId
     // Product.deleteById(prodId)
     //     .then(() => {
