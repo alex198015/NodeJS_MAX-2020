@@ -438,7 +438,32 @@ exports.getInvoice = (req, res, next) => {
             
             pdfDoc.pipe(fs.createWriteStream(InvoicePath))
             pdfDoc.pipe(res)
-            pdfDoc.text('Hello World!')
+            // pdfDoc.text('Hello World!')
+            pdfDoc.fontSize(26).text('Invoice', {
+                underline: true,
+            })
+
+            pdfDoc.text('---------------------------------')
+            let totalPrice = 0
+            order.products.forEach(prod => {
+                totalPrice += prod.quantity * prod.product.price
+                pdfDoc.fontSize(14).text(prod.product.title + ' - ' + prod.quantity + ' x ' + '$' + prod.product.price)
+            })
+            pdfDoc.text('------------------')
+            pdfDoc.fontSize(20).text('Total Price: $' + totalPrice)
+            // Initial setup
+            pdfDoc.fillColor('red')
+            .translate(0, 200)
+            .scale(0.4);
+
+            // Draw the path with the non-zero winding rule
+            pdfDoc.path('M 250,75 L 323,301 131,161 369,161 177,301 z')
+            .fill('non-zero');
+
+            // Draw the path with the even-odd winding rule
+            pdfDoc.translate(280, 0)
+            .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
+            .fill('even-odd');
             pdfDoc.end()
 
 
