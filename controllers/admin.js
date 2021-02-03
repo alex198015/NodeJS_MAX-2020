@@ -272,10 +272,69 @@ exports.getProducts = (req, res, next) => {
     // })
 }
 
-exports.postDeleteProduct = (req, res, next) => {
+// exports.postDeleteProduct = (req, res, next) => {
 
 
-    const prodId = req.body.productId
+//     const prodId = req.body.productId
+//     Product.findById(prodId)
+//         .then(product => {
+//             if (!product) {
+//                 return next(new Error('Product not found.'))
+//             }
+//             fileHelper.deleteFile(product.imageUrl)
+//             return Product.deleteOne({_id:prodId, userId: req.user._id })
+//         })
+//         .then(() => {
+            
+//             console.log('PRODUCT IS DELETED!')
+//             res.redirect('/admin/products')
+//         })
+//         .catch(err => {
+//             const error = new Error(err)
+//             error.httpStatusCode = 500
+//             return next(error)
+//         })
+//     // Product.findByIdAndRemove(prodId)
+        
+//     // const prodId = req.body.productId
+//     // Product.deleteById(prodId)
+//     //     .then(() => {
+//     //         console.log('PRODUCT IS DELETED!')
+//     //         res.redirect('/admin/products')
+//     //     })
+//     //     .catch(err => console.log(err))
+
+//     // Product.findByPk(prodId)
+//     //     .then(product => {
+//     //         return product.destroy()
+//     //     })
+//     //     .then(result => {
+//     //         console.log('PRODUCT IS DELETED!')
+//     //         res.redirect('/admin/products')
+//     //     })
+//     //     .catch(err => console.log(err))
+
+//     // Product.destroy({
+//     //     where:{
+//     //         id: prodId
+//     //     }
+//     // })
+//     // .then(res => {
+//     //     console.log('PRODUCT IS DELETED!')
+//             // res.redirect('/admin/products');
+//     // })
+//     // .catch(err => console.log(err))
+//     // res.redirect('/admin/products')
+
+
+//     // Product.deleteById(prodId)
+//     // res.redirect('/admin/products')
+// }
+
+exports.deleteProduct = (req, res, next) => {
+
+
+    const prodId = req.params.productId
     Product.findById(prodId)
         .then(product => {
             if (!product) {
@@ -287,46 +346,10 @@ exports.postDeleteProduct = (req, res, next) => {
         .then(() => {
             
             console.log('PRODUCT IS DELETED!')
-            res.redirect('/admin/products')
+            res.status(200).json({message: 'Success!'})
         })
         .catch(err => {
-            const error = new Error(err)
-            error.httpStatusCode = 500
-            return next(error)
+            res.status(500).json({message: 'Deleting product failed!'})
         })
-    // Product.findByIdAndRemove(prodId)
-        
-    // const prodId = req.body.productId
-    // Product.deleteById(prodId)
-    //     .then(() => {
-    //         console.log('PRODUCT IS DELETED!')
-    //         res.redirect('/admin/products')
-    //     })
-    //     .catch(err => console.log(err))
 
-    // Product.findByPk(prodId)
-    //     .then(product => {
-    //         return product.destroy()
-    //     })
-    //     .then(result => {
-    //         console.log('PRODUCT IS DELETED!')
-    //         res.redirect('/admin/products')
-    //     })
-    //     .catch(err => console.log(err))
-
-    // Product.destroy({
-    //     where:{
-    //         id: prodId
-    //     }
-    // })
-    // .then(res => {
-    //     console.log('PRODUCT IS DELETED!')
-            // res.redirect('/admin/products');
-    // })
-    // .catch(err => console.log(err))
-    // res.redirect('/admin/products')
-
-
-    // Product.deleteById(prodId)
-    // res.redirect('/admin/products')
 }

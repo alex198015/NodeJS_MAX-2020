@@ -44,7 +44,8 @@ router.post('/edit-product',[
 ], 
 isAuth, adminController.postEditProduct )
 
-router.post('/delete-product', isAuth, adminController.postDeleteProduct )
+// router.post('/delete-product', isAuth, adminController.postDeleteProduct )
+router.delete('/product/:productId', isAuth, adminController.deleteProduct )
 
 
 // exports.routes = router
